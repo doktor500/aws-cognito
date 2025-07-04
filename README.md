@@ -1,5 +1,15 @@
 # CDK TypeScript project
 
+## Setup and deploy project
+
+Install localstack if you want to test things locally (on MacOS, use `brew install localstack/tap/localstack-cli`):
+Install cdk and cdklocal dependencies: `npm install -g aws-cdk aws-cdk-local `
+
+```bash
+cdk bootstrap
+cdk deploy
+```
+
 ## Useful commands
 
 * `npm run build`   compile typescript to js
