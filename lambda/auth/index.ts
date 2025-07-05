@@ -1,5 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import fetch from "node-fetch";
+import { successPage } from "./successTemplate";
 
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
@@ -53,7 +54,8 @@ export const getJwtToken: APIGatewayProxyHandler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ authToken: data.id_token }),
+      headers: { "Content-Type": "text/html" },
+      body: successPage(data.id_token),
     };
 
   } catch (error: any) {
