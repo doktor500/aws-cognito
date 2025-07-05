@@ -3,14 +3,14 @@ import { crudPaymentsRepository } from "../../../repositories/crudPaymentsReposi
 import { aPayment } from "../../../fixtures/payment.fixture";
 
 describe("dynamoDbPaymentsRepository", () => {
-    it("can save a payment into the database", async () => {
-        const payment = aPayment();
+  it("can save a payment into the database", async () => {
+    const payment = aPayment();
 
-        await crudPaymentsRepository.save(payment);
-        const savedPayment = await crudPaymentsRepository.getBy(payment.id);
+    await crudPaymentsRepository.save(payment);
+    const savedPayment = await crudPaymentsRepository.getBy(payment.id);
 
-        expect(savedPayment).to.eql(payment);
+    expect(savedPayment).to.eql(payment);
 
-        await crudPaymentsRepository.deleteBy(payment.id);
-    })
+    await crudPaymentsRepository.deleteBy(payment.id);
+  });
 });
