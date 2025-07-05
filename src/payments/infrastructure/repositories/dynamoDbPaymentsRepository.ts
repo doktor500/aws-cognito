@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "dotenv/config";
 import { Payment } from "../../domain/payment";
 import { PaymentsRepository } from "../../application/paymentsRepository";
 import { dynamoDB } from "../db/dynamoDbClient";
@@ -10,14 +10,12 @@ const client = dynamoDB();
 const PAYMENTS_TABLE_NAME = process.env.PAYMENTS_TABLE_NAME;
 
 const save = async (payment: Payment): Promise<void> => {
-    const command = new PutCommand({ TableName: PAYMENTS_TABLE_NAME, Item: toDynamoDbPaymentEntity(payment) });
+  const command = new PutCommand({ TableName: PAYMENTS_TABLE_NAME, Item: toDynamoDbPaymentEntity(payment) });
 
-    await client
-        .send(command)
-        .catch((error) => {
-            console.error("[DynamoDBPaymentsRepository] PutCommand error:", error);
-            throw error;
-        });
-}
+  await client.send(command).catch((error) => {
+    console.error("[DynamoDBPaymentsRepository] PutCommand error:", error);
+    throw error;
+  });
+};
 
-export const dynamoDbPaymentsRepository: PaymentsRepository = { save }
+export const dynamoDbPaymentsRepository: PaymentsRepository = { save };

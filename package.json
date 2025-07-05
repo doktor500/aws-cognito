@@ -7,6 +7,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
+    "lint": "eslint bin lambda lib src test --ext .ts",
+    "lint:fix": "eslint bin lambda lib src test --ext .ts --fix",
     "test:acceptance": "npm run build && vitest run test/acceptance",
     "test:integration": "npm run build && AWS_ENDPOINT=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_REGION=us-east-1 vitest run test/integration",
     "cdk": "cdk"
@@ -27,10 +29,17 @@
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.840.0",
+    "@eslint/eslintrc": "^3.3.1",
     "@types/aws-lambda": "^8.10.150",
     "@types/lodash": "^4.17.20",
     "@types/node": "22.7.9",
+    "@typescript-eslint/eslint-plugin": "^8.35.1",
+    "@typescript-eslint/parser": "^8.35.1",
     "aws-cdk": "2.1020.2",
+    "eslint": "^9.30.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "prettier": "^3.6.2",
     "tsx": "^4.20.3",
     "typescript": "~5.6.3",
     "vite-tsconfig-paths": "^5.1.4",

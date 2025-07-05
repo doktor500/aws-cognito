@@ -1,3 +1,3 @@
 export type DynamoDbEntity = {
-    pk: string;
-}
+  pk: string;
+};
