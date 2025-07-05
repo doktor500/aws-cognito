@@ -19,15 +19,13 @@ export class ApplicationStack extends Stack {
         const createPaymentFunction = new NodejsFunction(this, 'CreatePaymentFunction', {
             entry: './lambda/index.ts',
             runtime: lambda.Runtime.NODEJS_20_X,
-            handler: 'main',
-            bundling: {
-                externalModules: ['aws-sdk'],
-                minify: true,
-            },
+            handler: 'createPayment',
             environment: {
                 PAYMENTS_TABLE_NAME: paymentsTable.tableName,
             }
         });
+
+        paymentsTable.grantReadWriteData(createPaymentFunction);
 
         new LambdaRestApi(this, 'ApiGwEndpoint', {
             handler: createPaymentFunction,
