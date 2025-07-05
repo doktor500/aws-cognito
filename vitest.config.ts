@@ -16,6 +16,7 @@ export const rootConfig: UserConfig = {
         teardownTimeout: 60000,
         testTimeout: 60000,
         reporters: ["default", "hanging-process"],
+        include: ["**/*.spec.ts"],
         sequence: {
             concurrent: false,
         },

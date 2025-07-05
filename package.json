@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
+    "test:acceptance": "npm run build && vitest run test/acceptance",
     "test:integration": "npm run build && AWS_ENDPOINT=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_REGION=us-east-1 vitest run test/integration",
     "cdk": "cdk"
   },
