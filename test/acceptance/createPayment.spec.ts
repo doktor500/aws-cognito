@@ -3,6 +3,7 @@ import { crudPaymentsRepository } from "../repositories/crudPaymentsRepository";
 import { aPayment } from "../fixtures/payment.fixture";
 
 const PAYMENTS_API_ENDPOINT = process.env.PAYMENTS_API_ENDPOINT;
+const BEARER_TOKEN = process.env.BEARER_TOKEN;
 
 if (!PAYMENTS_API_ENDPOINT) {
   throw new Error("PAYMENTS_API_ENDPOINT is not defined");
@@ -14,7 +15,7 @@ describe("Create payment endpoint", () => {
 
     await fetch(PAYMENTS_API_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${BEARER_TOKEN}` },
       body: JSON.stringify(payment),
     });
 
