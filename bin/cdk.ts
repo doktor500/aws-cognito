@@ -7,6 +7,6 @@ const app = new cdk.App();
 /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
 new ApplicationStack(app, 'ApplicationStack', {
     env: {
-        region: 'eu-west-2'
+        region: process.env.AWS_REGION ?? 'us-east-1'
     }
 });

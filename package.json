@@ -7,20 +7,31 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
+    "test:integration": "npm run build && AWS_ENDPOINT=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_REGION=us-east-1 vitest run test/integration",
     "cdk": "cdk"
   },
+  "type": "module",
   "dependencies": {
     "@aws-cdk/aws-iam": "^1.203.0",
     "@aws-cdk/aws-lambda": "^1.203.0",
+    "@aws-sdk/client-dynamodb": "^3.840.0",
+    "@aws-sdk/lib-dynamodb": "^3.840.0",
+    "@aws-sdk/util-dynamodb": "^3.840.0",
     "aws-cdk-lib": "2.202.0",
-    "aws-lambda": "^1.0.7",
-    "constructs": "^10.0.0"
+    "constructs": "^10.0.0",
+    "dotenv": "^17.0.1",
+    "lodash": "^4.17.21",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@aws-sdk/types": "^3.840.0",
     "@types/aws-lambda": "^8.10.150",
+    "@types/lodash": "^4.17.20",
     "@types/node": "22.7.9",
     "aws-cdk": "2.1020.2",
-    "ts-node": "^10.9.2",
-    "typescript": "~5.6.3"
+    "tsx": "^4.20.3",
+    "typescript": "~5.6.3",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   }
 }

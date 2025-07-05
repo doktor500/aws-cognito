@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
@@ -9,8 +10,9 @@ export class ApplicationStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
         super(scope, id, props);
 
-        const paymentsTable = new dynamoDb.Table(this, 'payments', {
+        const paymentsTable = new dynamoDb.Table(this, 'PaymentsTable', {
             partitionKey: { name: "pk", type: dynamoDb.AttributeType.STRING },
+            tableName: process.env.PAYMENTS_TABLE_NAME,
             billingMode: dynamoDb.BillingMode.PAY_PER_REQUEST,
         });
 
