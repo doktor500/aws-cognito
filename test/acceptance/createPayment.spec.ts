@@ -2,17 +2,17 @@ import { describe, expect, it } from "vitest";
 import { crudPaymentsRepository } from "../repositories/crudPaymentsRepository";
 import { aPayment } from "../fixtures/payment.fixture";
 
-const CREATE_PAYMENT_ENDPOINT = process.env.CREATE_PAYMENT_ENDPOINT;
+const PAYMENTS_API_ENDPOINT = process.env.PAYMENTS_API_ENDPOINT;
 
-if (!CREATE_PAYMENT_ENDPOINT) {
-    throw new Error("CREATE_PAYMENT_ENDPOINT is not defined");
+if (!PAYMENTS_API_ENDPOINT) {
+    throw new Error("PAYMENTS_API_ENDPOINT is not defined");
 }
 
 describe("Create payment endpoint", () => {
     it("should create a payment successfully", async () => {
         const payment = aPayment();
 
-        await fetch(CREATE_PAYMENT_ENDPOINT, {
+        await fetch(PAYMENTS_API_ENDPOINT, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payment),
@@ -22,5 +22,5 @@ describe("Create payment endpoint", () => {
         expect(savedPayment).to.eql(payment);
 
         await crudPaymentsRepository.deleteBy(payment.id);
-    })
-})
+    });
+});

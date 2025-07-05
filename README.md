@@ -29,5 +29,5 @@ AWS_REGION=us-east-1 cdklocal deploy
 Executing acceptance test:
 
 ```bash
-CREATE_PAYMENT_ENDPOINT=https://... npm run test:acceptance
+PAYMENTS_API_ENDPOINT=https://... npm run test:acceptance
 ```

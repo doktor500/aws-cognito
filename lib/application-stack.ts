@@ -2,7 +2,7 @@ import "dotenv/config";
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { LambdaRestApi } from "aws-cdk-lib/aws-apigateway";
+import { RestApi, LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import * as dynamoDb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 
@@ -27,9 +27,7 @@ export class ApplicationStack extends Stack {
 
         paymentsTable.grantReadWriteData(createPaymentFunction);
 
-        new LambdaRestApi(this, 'ApiGwEndpoint', {
-            handler: createPaymentFunction,
-            restApiName: 'PaymentsApi',
-        });
+        const api = new RestApi(this, 'ApiGwEndpoint', { restApiName: 'PaymentsApi' });
+        api.root.addMethod('POST', new LambdaIntegration(createPaymentFunction));
     }
 }
