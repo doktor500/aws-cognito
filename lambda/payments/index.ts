@@ -1,6 +1,6 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 import { paymentSchema } from "./schema/paymentSchema";
-import { dynamoDbPaymentsRepository } from "../src/payments/infrastructure/repositories/dynamoDbPaymentsRepository";
+import { dynamoDbPaymentsRepository } from "../../src/payments/infrastructure/repositories/dynamoDbPaymentsRepository";
 
 export async function createPayment(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
   const paymentData = JSON.parse(event.body ?? "{}");

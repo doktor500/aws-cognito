@@ -5,8 +5,8 @@ import { aPayment } from "../fixtures/payment.fixture";
 const PAYMENTS_API_ENDPOINT = process.env.PAYMENTS_API_ENDPOINT;
 const BEARER_TOKEN = process.env.BEARER_TOKEN;
 
-if (!PAYMENTS_API_ENDPOINT) {
-  throw new Error("PAYMENTS_API_ENDPOINT is not defined");
+if (!PAYMENTS_API_ENDPOINT || !BEARER_TOKEN) {
+  throw new Error("PAYMENTS_API_ENDPOINT and BEARER_TOKEN need to be defined");
 }
 
 describe("Create payment endpoint", () => {
