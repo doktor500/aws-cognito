@@ -1,15 +1,16 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import fetch from "node-fetch";
 import { successPage } from "./successTemplate";
+import { ssmParameterStore } from "./ssmParameterStore";
 
 const clientId = process.env.CLIENT_ID;
-const clientSecret = process.env.CLIENT_SECRET;
+const clientSecretSsmParam = process.env.CLIENT_SECRET_SSM_PARAM;
 const oauthTokenUrl = process.env.OAUTH_TOKEN_URL;
 const callbackUrl = process.env.CALLBACK_URL;
 
 export const getJwtToken: APIGatewayProxyHandler = async (event) => {
   try {
-    if (!clientId || !clientSecret || !oauthTokenUrl || !callbackUrl) {
+    if (!clientId || !clientSecretSsmParam || !oauthTokenUrl || !callbackUrl) {
       return {
         statusCode: 500,
         body: JSON.stringify({ message: "Missing environment variables" }),
@@ -24,6 +25,7 @@ export const getJwtToken: APIGatewayProxyHandler = async (event) => {
       };
     }
 
+    const clientSecret = await ssmParameterStore.getSecuredParameterValue(clientSecretSsmParam)
     const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
     const params = new URLSearchParams({

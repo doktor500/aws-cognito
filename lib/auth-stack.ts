@@ -6,6 +6,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as cognito from "aws-cdk-lib/aws-cognito";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as cdk from "aws-cdk-lib";
+import { SecureParameterStore } from "cdk-secure-parameter-store";
 
 export class AuthStack extends Stack {
   public readonly userPool: cognito.UserPool;
@@ -56,18 +57,33 @@ export class AuthStack extends Stack {
       generateSecret: true,
     });
 
+    const appClientSecretParameterName = "/cognito/appClientSecret";
+
+    new SecureParameterStore(this, 'appClientSecretParameter', {
+      name: appClientSecretParameterName,
+      value: this.appClient.userPoolClientSecret.unsafeUnwrap(),
+    });
+
     const getJwtTokenFunction = new NodejsFunction(this, "getJwtTokenFunction", {
       entry: "./lambda/auth/index.ts",
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: "getJwtToken",
       environment: {
         CLIENT_ID: this.appClient.userPoolClientId,
-        CLIENT_SECRET: this.appClient.userPoolClientSecret.unsafeUnwrap(), // TODO: use SSM or Secrets Manager in prod
+        CLIENT_SECRET_SSM_PARAM: appClientSecretParameterName,
         OAUTH_TOKEN_URL: `https://${userPoolDomain.domainName}.auth.${this.region}.amazoncognito.com/oauth2/token`,
         CALLBACK_URL: callbackURL,
       },
       timeout: Duration.seconds(10),
     });
+
+    getJwtTokenFunction.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["ssm:GetParameter"],
+      resources: [
+        `arn:aws:ssm:${this.region}:${this.account}:parameter${appClientSecretParameterName}`,
+      ],
+    }));
 
     const authApiRole = new iam.Role(this, "authApiRole", {
       assumedBy: new iam.CompositePrincipal(
