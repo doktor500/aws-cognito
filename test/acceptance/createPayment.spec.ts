@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { crudPaymentsRepository } from "../repositories/crudPaymentsRepository";
 import { aPayment } from "../fixtures/payment.fixture";
+import { authTokenDecoder } from "../../src/shared/utils/authTokenDecoder";
 
 const PAYMENTS_API_ENDPOINT = process.env.PAYMENTS_API_ENDPOINT;
 const BEARER_TOKEN = process.env.BEARER_TOKEN;
@@ -11,7 +12,8 @@ if (!PAYMENTS_API_ENDPOINT || !BEARER_TOKEN) {
 
 describe("Create payment endpoint", () => {
   it("should create a payment successfully", async () => {
-    const payment = aPayment();
+    const userId = authTokenDecoder.getUserIdFromToken(BEARER_TOKEN);
+    const payment = aPayment({ userId });
 
     await fetch(PAYMENTS_API_ENDPOINT, {
       method: "POST",

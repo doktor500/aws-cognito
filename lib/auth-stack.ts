@@ -40,7 +40,7 @@ export class AuthStack extends Stack {
 
     const callbackURL = cdk.Lazy.string({
       produce: () => {
-        return `https://${authApi.attrApiId}.execute-api.${this.region}.amazonaws.com/${authApiStage.stageName}/callback`;
+        return `https://${authApi.attrApiId}.execute-api.${this.region}.amazonaws.com/${authApiStage.stageName}/auth/callback`;
       },
     });
 
@@ -113,7 +113,7 @@ export class AuthStack extends Stack {
 
     const callbackRoute = new apiGatewayV2.CfnRoute(this, "callbackRoute", {
       apiId: authApi.attrApiId,
-      routeKey: "GET /callback",
+      routeKey: "GET /auth/callback",
       target: `integrations/${authApiIntegration.ref}`,
       authorizationType: "NONE",
     });

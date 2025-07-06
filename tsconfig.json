@@ -5,7 +5,7 @@
     "moduleResolution": "bundler",
     "lib": [
       "es2022",
-      "webworker",
+      "webworker"
     ],
     "noEmit": true,
     "declaration": false,
@@ -24,7 +24,8 @@
     "strictPropertyInitialization": false,
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules",

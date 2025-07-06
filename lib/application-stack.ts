@@ -94,7 +94,7 @@ export class ApplicationStack extends Stack {
     });
 
     new CfnOutput(this, "createPaymentUrl", {
-      value: `https://${paymentsApi.ref}.execute-api.${this.region}.amazonaws.com/${paymentsApiStage.stageName}/${createPaymentRoute.routeKey.split(" ")[1]}`,
+      value: `https://${paymentsApi.ref}.execute-api.${this.region}.amazonaws.com/${paymentsApiStage.stageName}${createPaymentRoute.routeKey.split(" ")[1]}`,
       description: "Endpoint URL for creating a payment",
     });
   }

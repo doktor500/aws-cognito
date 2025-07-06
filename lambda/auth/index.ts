@@ -2,11 +2,14 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import fetch from "node-fetch";
 import { successPage } from "./successTemplate";
 import { ssmParameterStore } from "./ssmParameterStore";
+import z from "zod";
 
 const clientId = process.env.CLIENT_ID;
 const clientSecretSsmParam = process.env.CLIENT_SECRET_SSM_PARAM;
 const oauthTokenUrl = process.env.OAUTH_TOKEN_URL;
 const callbackUrl = process.env.CALLBACK_URL;
+
+const tokenSchema = z.object({ access_token: z.string() });
 
 export const getJwtToken: APIGatewayProxyHandler = async (event) => {
   try {
@@ -52,12 +55,21 @@ export const getJwtToken: APIGatewayProxyHandler = async (event) => {
       };
     }
 
-    const data = await response.json() as { id_token: string };
+    const data = await response.json()
+    const result = tokenSchema.safeParse(data);
+
+    if (result.success) {
+      return {
+        statusCode: 200,
+        headers: { "Content-Type": "text/html" },
+        body: successPage(result.data.access_token),
+      };
+    }
 
     return {
-      statusCode: 200,
-      headers: { "Content-Type": "text/html" },
-      body: successPage(data.id_token),
+      statusCode: 400,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: result.error }),
     };
 
   } catch (error: any) {
