@@ -1,0 +1,118 @@
+openapi: 3.0.0
+
+info:
+  title: Payments tracker API
+  license:
+    name: Apache 2.0
+    url: www.apache.org/licenses/LICENSE-2.0.html
+  description: An API that allows to track payments
+  version: 1.0.0
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+    Payment:
+      type: object
+      required:
+        - id
+        - userId
+        - amount
+        - currency
+        - timestamp
+        - description
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the payment
+        userId:
+          type: string
+          format: uuid
+          description: The ID of the user who made the payment
+        amount:
+          type: number
+          format: float
+          minimum: 0
+          exclusiveMinimum: true
+          description: The payment amount (must be positive)
+        currency:
+          type: string
+          minLength: 1
+          description: The currency code for the payment
+        timestamp:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+          description: Unix timestamp of when the payment was made
+        description:
+          type: string
+          description: Description of the payment
+
+paths:
+  /auth/callback:
+    get:
+      summary: OAuth2 callback endpoint
+      description: Handles the OAuth2 callback and exchanges the authorization code for a JWT token
+      parameters:
+        - in: query
+          name: code
+          required: true
+          schema:
+            type: string
+          description: The authorization code from the OAuth provider
+      responses:
+        '200':
+          description: Successfully retrieved JWT token
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payments:
+    post:
+      summary: Create a new payment
+      description: Creates a new payment for the authenticated user
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+      responses:
+        '200':
+          description: Payment created successfully
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized - User is not authorized to perform this operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
