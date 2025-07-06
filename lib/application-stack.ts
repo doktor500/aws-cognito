@@ -36,7 +36,7 @@ export class ApplicationStack extends Stack {
     const paymentsApiRole = new iam.Role(this, "paymentsApiRole", {
       assumedBy: new iam.CompositePrincipal(
         new iam.ServicePrincipal("apigateway.amazonaws.com"),
-        new iam.ServicePrincipal("lambda.amazonaws.com")
+        new iam.ServicePrincipal("lambda.amazonaws.com"),
       ),
       inlinePolicies: {
         invokeLambda: new iam.PolicyDocument({
@@ -86,7 +86,7 @@ export class ApplicationStack extends Stack {
       routeKey: "POST /payments",
       target: `integrations/${paymentsApiIntegration.ref}`,
       authorizationType: "JWT",
-      ...(this.authorizerId && { authorizerId: this.authorizerId })
+      ...(this.authorizerId && { authorizerId: this.authorizerId }),
     });
 
     const paymentsApiDeployment = new apiGatewayV2.CfnDeployment(this, "paymentsApiDeployment", {

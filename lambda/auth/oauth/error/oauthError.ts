@@ -3,7 +3,7 @@ export class OauthError extends Error {
 
   constructor(message: string, statusCode: number) {
     super(message);
-    this.name = 'OauthError';
+    this.name = "OauthError";
     this.statusCode = statusCode;
   }
 }

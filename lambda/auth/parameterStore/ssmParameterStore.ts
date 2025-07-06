@@ -11,6 +11,6 @@ const getSecuredParameterValue = async (parameterName: string): Promise<string> 
   }
 
   return response.Parameter.Value;
-}
+};
 
 export const ssmParameterStore = { getSecuredParameterValue };

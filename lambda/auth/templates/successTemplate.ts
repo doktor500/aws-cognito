@@ -54,5 +54,5 @@ export const successPage = (authToken: string) => {
       </script>
     </body>
   </html>
-  `
-}
+  `;
+};

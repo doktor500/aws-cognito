@@ -8,7 +8,7 @@ type RequestData = {
   authCode: string;
   callbackUrl: string;
   oauthTokenUrl: string;
-}
+};
 
 const tokenSchema = z.object({ access_token: z.string() });
 
@@ -31,7 +31,7 @@ const getAccessToken = async (props: RequestData) => {
 
   if (!response.ok) {
     const errorBody = await response.text();
-    return Promise.reject(new OauthError(`Failed to get token ${errorBody}`, response.status))
+    return Promise.reject(new OauthError(`Failed to get token ${errorBody}`, response.status));
   }
 
   const data = await response.json();
@@ -39,6 +39,6 @@ const getAccessToken = async (props: RequestData) => {
   const { success, error } = result;
 
   return success ? result.data.access_token : Promise.reject(new OauthError(`Failed to get token ${error}`, 500));
-}
+};
 
 export const oauthProvider = { getAccessToken };

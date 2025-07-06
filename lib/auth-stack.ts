@@ -59,7 +59,7 @@ export class AuthStack extends Stack {
 
     const appClientSecretParameterName = "/cognito/appClientSecret";
 
-    new SecureParameterStore(this, 'appClientSecretParameter', {
+    new SecureParameterStore(this, "appClientSecretParameter", {
       name: appClientSecretParameterName,
       value: this.appClient.userPoolClientSecret.unsafeUnwrap(),
     });
@@ -77,18 +77,18 @@ export class AuthStack extends Stack {
       timeout: Duration.seconds(10),
     });
 
-    getJwtTokenFunction.addToRolePolicy(new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["ssm:GetParameter"],
-      resources: [
-        `arn:aws:ssm:${this.region}:${this.account}:parameter${appClientSecretParameterName}`,
-      ],
-    }));
+    getJwtTokenFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["ssm:GetParameter"],
+        resources: [`arn:aws:ssm:${this.region}:${this.account}:parameter${appClientSecretParameterName}`],
+      }),
+    );
 
     const authApiRole = new iam.Role(this, "authApiRole", {
       assumedBy: new iam.CompositePrincipal(
         new iam.ServicePrincipal("apigateway.amazonaws.com"),
-        new iam.ServicePrincipal("lambda.amazonaws.com")
+        new iam.ServicePrincipal("lambda.amazonaws.com"),
       ),
       inlinePolicies: {
         invokeLambda: new iam.PolicyDocument({

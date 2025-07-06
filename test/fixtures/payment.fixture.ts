@@ -9,6 +9,6 @@ export const aPayment = (payment?: Partial<Payment>): Payment => {
     currency: "GBP",
     timestamp: new Date().getTime(),
     description: "Payment description",
-    ...payment
+    ...payment,
   };
 };

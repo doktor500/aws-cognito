@@ -26,16 +26,17 @@ export const getJwtToken: APIGatewayProxyHandler = async (event) => {
     };
   }
 
-  return ssmParameterStore.getSecuredParameterValue(clientSecretSsmParam)
-    .then(clientSecret => ({ clientId, clientSecret, authCode, callbackUrl, oauthTokenUrl }))
+  return ssmParameterStore
+    .getSecuredParameterValue(clientSecretSsmParam)
+    .then((clientSecret) => ({ clientId, clientSecret, authCode, callbackUrl, oauthTokenUrl }))
     .then(oauthProvider.getAccessToken)
-    .then(token => ({ statusCode: 200, headers: { "Content-Type": "text/html" }, body: successPage(token) }))
+    .then((token) => ({ statusCode: 200, headers: { "Content-Type": "text/html" }, body: successPage(token) }))
     .catch((error: OauthError) => toErrorResponse(error));
 };
 
 const toErrorResponse = (error: OauthError) => {
   return {
     statusCode: error.statusCode ?? 500,
-    body: JSON.stringify({ message: error.message })
-  }
+    body: JSON.stringify({ message: error.message }),
+  };
 };

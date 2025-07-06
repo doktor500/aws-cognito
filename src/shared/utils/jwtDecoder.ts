@@ -7,6 +7,6 @@ const getDecodedAccessToken = (token: string) => {
     console.error("Failed to decode JWT token", error);
     return undefined;
   }
-}
+};
 
-export const jwtDecoder = { getDecodedAccessToken }
+export const jwtDecoder = { getDecodedAccessToken };
