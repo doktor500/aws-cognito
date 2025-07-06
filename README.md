@@ -106,6 +106,10 @@ stateStore.delete(state); // single-use
 As the whole architecture is based on serverless components, it can scale in terms of infrastructure and costs to handle
 the load of 100K monthly active users.
 
+## API spec
+
+Can be found in the `docs/api/specification.yml` file.
+
 ## Out of scope
 
 The query to retrieve the payments of a given user and generate a monthly report is not implemented as it has been
