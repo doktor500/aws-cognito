@@ -8,11 +8,13 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { AuthStack } from "./auth-stack";
 
+const isLocal = process.env.USE_LOCALSTACK === "true";
+
 export class ApplicationStack extends Stack {
+  private readonly authorizerId: string | undefined;
+
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
-
-    const authStack = new AuthStack(scope, "AuthStack", props);
 
     const paymentsTable = new dynamoDb.Table(this, "paymentsTable", {
       partitionKey: { name: "pk", type: dynamoDb.AttributeType.STRING },
@@ -54,16 +56,22 @@ export class ApplicationStack extends Stack {
       name: "PaymentsAPI",
     });
 
-    const jwtAuth = new apiGatewayV2.CfnAuthorizer(this, "jwtAuth", {
-      name: "jwt-authorizer",
-      apiId: paymentsApi.attrApiId,
-      authorizerType: "JWT",
-      identitySource: ["$request.header.Authorization"],
-      jwtConfiguration: {
-        issuer: `https://cognito-idp.${this.region}.amazonaws.com/${authStack.userPool.userPoolId}`,
-        audience: [authStack.appClient.userPoolClientId],
-      },
-    });
+    if (!isLocal) {
+      const authStack = new AuthStack(scope, "AuthStack", props);
+
+      const jwtAuth = new apiGatewayV2.CfnAuthorizer(this, "jwtAuth", {
+        name: "jwt-authorizer",
+        apiId: paymentsApi.attrApiId,
+        authorizerType: "JWT",
+        identitySource: ["$request.header.Authorization"],
+        jwtConfiguration: {
+          issuer: `https://cognito-idp.${this.region}.amazonaws.com/${authStack.userPool.userPoolId}`,
+          audience: [authStack.appClient.userPoolClientId],
+        },
+      });
+
+      this.authorizerId = jwtAuth.ref;
+    }
 
     const paymentsApiIntegration = new apiGatewayV2.CfnIntegration(this, "paymentsApiIntegration", {
       apiId: paymentsApi.attrApiId,
@@ -78,7 +86,7 @@ export class ApplicationStack extends Stack {
       routeKey: "POST /payments",
       target: `integrations/${paymentsApiIntegration.ref}`,
       authorizationType: "JWT",
-      authorizerId: jwtAuth.ref,
+      ...(this.authorizerId && { authorizerId: this.authorizerId })
     });
 
     const paymentsApiDeployment = new apiGatewayV2.CfnDeployment(this, "paymentsApiDeployment", {
