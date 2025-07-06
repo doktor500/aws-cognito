@@ -48,6 +48,16 @@ To destroy the stacks:
 cdk destroy Stacks: ApplicationStack && cdk destroy Stacks: AuthStack
 ```
 
+Once the stack is deployed on AWS,
+
+- Grab the link to create a user (sign up link) from the CDK's execution output, create a user with emal and password,
+  verify the account and copy the auth token
+- USe the payments API URL form the CDK's execution output to submit payment records
+
+With the auth token and the payments API endpoint, you can execute the acceptance tests or requests via curl, Postman,
+etc. to submit payment records.
+
+
 ## Execute automated tests
 
 Before executing integration tests, run
@@ -71,7 +81,7 @@ PAYMENTS_API_ENDPOINT=https://... BEARER_TOKEN=... npm run test:acceptance
 ![architecture-diagram.png](docs/architecture-diagram.png)
 
 Currently the auth token is returned in the HTML rendered by the auth/callback endpoint, this is just for testing
-purposes and in real scenario this would be return as part of an HTTP only cookie.
+purposes and in real scenario this would be returned as part of an HTTP only cookie.
 
 Additional security measures could be implemented such as rate limiting the auth/callback endpoint, and other mechanisms
 to prevent brute force attacks.
