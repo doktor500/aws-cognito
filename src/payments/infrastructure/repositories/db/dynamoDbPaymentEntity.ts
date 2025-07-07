@@ -1,5 +1,5 @@
 import { omit } from "lodash";
-import { Payment } from "../../domain/payment";
+import { Payment } from "../../../domain/payment";
 import { DynamoDbEntity } from "./dynamoDbEntity";
 
 export type DynamoDbPaymentEntity = DynamoDbEntity & {

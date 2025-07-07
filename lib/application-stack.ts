@@ -23,7 +23,7 @@ export class ApplicationStack extends Stack {
     });
 
     const createPaymentFunction = new NodejsFunction(this, "createPaymentFunction", {
-      entry: "./lambda/payments/index.ts",
+      entry: "./src/payments/infrastructure/index.ts",
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: "createPayment",
       environment: {

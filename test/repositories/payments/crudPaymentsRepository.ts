@@ -1,8 +1,8 @@
-import { UUID } from "../../src/payments/domain/uuid";
+import { UUID } from "../../../src/payments/domain/uuid";
 import { DeleteCommand, GetCommand } from "@aws-sdk/lib-dynamodb";
-import { fromDynamoDbPaymentEntity } from "../../src/payments/infrastructure/db/dynamoDbPaymentEntity";
-import { dynamoDB } from "../../src/payments/infrastructure/db/dynamoDbClient";
-import { dynamoDbPaymentsRepository } from "../../src/payments/infrastructure/repositories/dynamoDbPaymentsRepository";
+import { fromDynamoDbPaymentEntity } from "../../../src/payments/infrastructure/repositories/db/dynamoDbPaymentEntity";
+import { dynamoDB } from "../../../src/payments/infrastructure/repositories/db/dynamoDbClient";
+import { dynamoDbPaymentsRepository } from "../../../src/payments/infrastructure/repositories/dynamoDbPaymentsRepository";
 
 const client = dynamoDB();
 

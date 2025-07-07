@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { Payment } from "../../src/payments/domain/payment";
+import { Payment } from "../../../src/payments/domain/payment";
 
 export const aPayment = (payment?: Partial<Payment>): Payment => {
   return {

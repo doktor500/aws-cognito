@@ -1,9 +1,9 @@
 import "dotenv/config";
 import { Payment } from "../../domain/payment";
 import { PaymentsRepository } from "../../application/paymentsRepository";
-import { dynamoDB } from "../db/dynamoDbClient";
+import { dynamoDB } from "./db/dynamoDbClient";
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
-import { toDynamoDbPaymentEntity } from "../db/dynamoDbPaymentEntity";
+import { toDynamoDbPaymentEntity } from "./db/dynamoDbPaymentEntity";
 
 const client = dynamoDB();
 

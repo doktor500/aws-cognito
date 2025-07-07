@@ -65,7 +65,7 @@ export class AuthStack extends Stack {
     });
 
     const getJwtTokenFunction = new NodejsFunction(this, "getJwtTokenFunction", {
-      entry: "./lambda/auth/index.ts",
+      entry: "./src/auth/infrastructure/index.ts",
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: "getJwtToken",
       environment: {

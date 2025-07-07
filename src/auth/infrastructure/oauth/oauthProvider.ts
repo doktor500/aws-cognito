@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import z from "zod";
-import { OauthError } from "./error/oauthError";
+import { OauthError } from "../../domain/error/oauthError";
 
 type RequestData = {
   clientId: string;

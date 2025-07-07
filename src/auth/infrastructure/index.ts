@@ -1,8 +1,8 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { successPage } from "./templates/successTemplate";
-import { ssmParameterStore } from "./parameterStore/ssmParameterStore";
 import { oauthProvider } from "./oauth/oauthProvider";
-import { OauthError } from "./oauth/error/oauthError";
+import { OauthError } from "../domain/error/oauthError";
+import { ssmParameterStore } from "./config/ssmParameterStore";
 
 const clientId = process.env.CLIENT_ID;
 const clientSecretSsmParam = process.env.CLIENT_SECRET_SSM_PARAM;
